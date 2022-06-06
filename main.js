@@ -393,24 +393,24 @@ function renderAttack(firstNinjaData, secondNinjaData) {
 
     attackButton.addEventListener('click', () => {
         // наш удар
-        let damage = getRandomInt(firstNinjaData.attacks[0].minDamage, firstNinjaData.attacks[0].maxDamage);
+        let damage = getRandomInt(firstNinjaData.attacks[0].minDamage, firstNinjaData.attacks[0].maxDamage + 1);
         if(enemyRemainingHp >= 0) {
             enemyRemainingHp = enemyRemainingHp - damage;
             if(enemyRemainingHp < 0) {
                 enemyRemainingHp = 0;
             }
             enemyHP.textContent = `${enemyRemainingHp} / ${enemyTotalHP}`;
-            renderHPBar(false);
+            renderHPBar(true);
         }
         // ответный удар
-        damage = getRandomInt(secondNinjaData.attacks[0].minDamage, secondNinjaData.attacks[0].maxDamage);
+        damage = getRandomInt(secondNinjaData.attacks[0].minDamage, secondNinjaData.attacks[0].maxDamage + 1);
         if(heroRemainingHp >= 0) {
             heroRemainingHp = heroRemainingHp - damage;
             if(heroRemainingHp < 0) {
                 heroRemainingHp = 0;
             }
             heroHP.textContent = `${heroRemainingHp} / ${heroTotalHP}`;
-            renderHPBar(true);
+            renderHPBar(false);
         }
     });
 
