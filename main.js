@@ -322,20 +322,6 @@ const ninja = [
 ];
 
 // МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
-// МАССИВ С ГЕРОЯМИ
 
 function renderNormalHero(ninjaData) {
     let normalHero = document.querySelector('#normal-card-template').content.cloneNode(true);
@@ -377,7 +363,7 @@ function insertDarkHeroToHTML(card) {
     document.querySelector('.playground').append(card);
 }
 
-let firstNinjaNumber = getRandomInt(0, ninja.length);
+const firstNinjaNumber = getRandomInt(0, ninja.length);
 let secontNinjaNumber = getRandomInt(0, ninja.length);
 while(firstNinjaNumber === secontNinjaNumber) {
     secontNinjaNumber = getRandomInt(0, ninja.length);
@@ -385,9 +371,59 @@ while(firstNinjaNumber === secontNinjaNumber) {
 
 insertNormalHeroToHTML(renderNormalHero(ninja[firstNinjaNumber]));
 insertDarkHeroToHTML(renderDarkHero(ninja[secontNinjaNumber]));
+renderAttack(ninja[firstNinjaNumber], ninja[secontNinjaNumber]);
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
 }
+
+function renderAttack(firstNinjaData, secondNinjaData) {
+    let attackButton = document.querySelector('.button');
+    attackButton.textContent = firstNinjaData.attacks[0].name;
+
+    let enemyTotalHP = Number(document.querySelector('.enemy #hero-hp').textContent);
+    let enemyHP = document.querySelector('.enemy #health-character');
+    let enemyRemainingHp = enemyTotalHP;
+
+    let heroTotalHP = Number(document.querySelector('.character #hero-hp').textContent);
+    let heroHP = document.querySelector('.character #health-character');
+    let heroRemainingHp = heroTotalHP;
+
+    attackButton.addEventListener('click', () => {
+        // наш удар
+        let damage = getRandomInt(firstNinjaData.attacks[0].minDamage, firstNinjaData.attacks[0].maxDamage);
+        if(enemyRemainingHp >= 0) {
+            enemyRemainingHp = enemyRemainingHp - damage;
+            if(enemyRemainingHp < 0) {
+                enemyRemainingHp = 0;
+            }
+            enemyHP.textContent = `${enemyRemainingHp} / ${enemyTotalHP}`;
+            renderHPBar(false);
+        }
+        // ответный удар
+        damage = getRandomInt(secondNinjaData.attacks[0].minDamage, secondNinjaData.attacks[0].maxDamage);
+        if(heroRemainingHp >= 0) {
+            heroRemainingHp = heroRemainingHp - damage;
+            if(heroRemainingHp < 0) {
+                heroRemainingHp = 0;
+            }
+            heroHP.textContent = `${heroRemainingHp} / ${heroTotalHP}`;
+            renderHPBar(true);
+        }
+    });
+
+    function renderHPBar(enemy) {
+        if(enemy === false) {
+            let heroHPPerCent = heroTotalHP / 100;
+            let hpBar = document.querySelector('.character #progressbar-character');
+            hpBar.setAttribute('style', `width: ${heroRemainingHp / heroHPPerCent}%;`);
+        } else {
+            let enemyHPPerCent = enemyTotalHP / 100;
+            let hpBar = document.querySelector('.enemy #progressbar-character');
+            hpBar.setAttribute('style', `width: ${enemyRemainingHp / enemyHPPerCent}%;`);
+        }
+    }
+}
+
