@@ -321,6 +321,8 @@ const ninja = [
     }
 ];
 
+// МАССИВ С ГЕРОЯМИ
+
 const logs = [
     '[ПЕРСОНАЖ-№1] вспомнил что-то важное, но неожиданно [ПЕРСОНАЖ-№2], не помня себя от испуга, ударил в предплечье врага.',
     '[ПЕРСОНАЖ-№1] поперхнулся, и за это [ПЕРСОНАЖ-№2] с испугу приложил прямой удар коленом в лоб врага.',
@@ -334,7 +336,7 @@ const logs = [
     '[ПЕРСОНАЖ-№1] пытался что-то сказать, но вдруг, неожиданно [ПЕРСОНАЖ-№2] со скуки, разбил бровь сопернику.'
 ];
 
-// МАССИВ С ГЕРОЯМИ
+// МАССИВ С ЛОГАМИ
 
 function renderNormalHero(ninjaData) {
     let normalHero = document.querySelector('#normal-card-template').content.cloneNode(true);
@@ -638,10 +640,24 @@ function renderAttack(firstNinjaData, secondNinjaData) {
             let heroHPPerCent = heroTotalHP / 100;
             let hpBar = document.querySelector('.character #progressbar-character');
             hpBar.setAttribute('style', `width: ${heroRemainingHp / heroHPPerCent}%;`);
+            if((heroRemainingHp / heroHPPerCent) < 60) {
+                hpBar.classList.add('health_low');
+            }
+            if((heroRemainingHp / heroHPPerCent) < 20) {
+                hpBar.classList.remove('health_low');
+                hpBar.classList.add('health_critical');
+            }
         } else {
             let enemyHPPerCent = enemyTotalHP / 100;
             let hpBar = document.querySelector('.enemy #progressbar-character');
             hpBar.setAttribute('style', `width: ${enemyRemainingHp / enemyHPPerCent}%;`);
+            if((enemyRemainingHp / enemyHPPerCent) < 60) {
+                hpBar.classList.add('health_low');
+            }
+            if((enemyRemainingHp / enemyHPPerCent) < 20) {
+                hpBar.classList.remove('health_low');
+                hpBar.classList.add('health_critical');
+            }
         }
     }
 
