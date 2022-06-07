@@ -408,3 +408,7 @@ h5 {
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
   }
 }
+
+::-webkit-scrollbar {
+  width: 0;
+}
